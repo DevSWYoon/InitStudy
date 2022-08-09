@@ -1,3 +1,3 @@
-# InitWebStudy
+# InitStudy
 
 hello
