@@ -1,3 +1,4 @@
+//MEMORY USAGE : 2684KB , TIME REQUIRED : 116ms
 #include <iostream>
 #include <vector>
 #include <list>
@@ -26,7 +27,7 @@ public:
     pair<int,int> getLocation(void) {return make_pair(row, col);}
     
     pair<int,int> move(void) {
-        for(int remain_move = speed; remain_move > 0; --remain_move)
+        for(int remain_move = speed % (2 * ((Dir[dir_ind][0] != 0 ? R : C) - 1)); remain_move > 0; --remain_move)
         {
             int next_row = row + Dir[dir_ind][0];
             int next_col = col + Dir[dir_ind][1];
