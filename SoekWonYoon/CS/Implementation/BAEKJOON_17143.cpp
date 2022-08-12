@@ -26,7 +26,7 @@ public:
     
     pair<int,int> getLocation(void) {return make_pair(row, col);}
     
-    pair<int,int> move(void) {
+    void move(list<shark>::iterator &it,list<shark> &shark_list, vector<vector<list<shark>::iterator>> &grid, const list<shark>::iterator &empty_flag) {
         for(int remain_move = speed % (2 * ((Dir[dir_ind][0] != 0 ? R : C) - 1)); remain_move > 0; --remain_move)
         {
             int next_row = row + Dir[dir_ind][0];
@@ -39,7 +39,17 @@ public:
             col += Dir[dir_ind][1];
         }
         
-        return getLocation();
+        pair<int,int> cur_loc = getLocation();
+        
+        if(grid[cur_loc.first][cur_loc.second] == empty_flag || it->getSize() > grid[cur_loc.first][cur_loc.second]->getSize())
+        {
+            if(grid[cur_loc.first][cur_loc.second] != empty_flag)
+                shark_list.erase(grid[cur_loc.first][cur_loc.second]);
+            grid[cur_loc.first][cur_loc.second] = it;
+            it++;
+        }
+        else
+            it = shark_list.erase(it);
     }
 };
 
@@ -90,19 +100,7 @@ int main(void)
         
         for(list<shark>::iterator it = shark_list.begin(); it != shark_list.end(); )
         {
-            cur_loc = it->move();
-            
-            if(grid[cur_loc.first][cur_loc.second] == empty_flag || it->getSize() > grid[cur_loc.first][cur_loc.second]->getSize())
-            {
-                if(grid[cur_loc.first][cur_loc.second] != empty_flag)
-                    shark_list.erase(grid[cur_loc.first][cur_loc.second]);
-                grid[cur_loc.first][cur_loc.second] = it;
-                it++;
-            }
-            else
-            {
-                it = shark_list.erase(it);
-            }
+            it->move(it, shark_list, grid, empty_flag);
         }
     }
     
